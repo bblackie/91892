@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Movie Listing</h1>
+    {% for movie in movies %}
+        <h2>{{ movie[1] }}</h2>
+        <p>{{ movie[2] }}</p>
+    {% endfor %}
+</body>
+</html>

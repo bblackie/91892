@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Movie Listing</h1>
+    {% for movie in movies %}
+    <h2>{{ movie[1] }}</h2>
+    <p>{{ movie[2] }}</p>
+    {% endfor %}
+
+    <div class="container">
+      <div id="data-table-container">
+        <table><a href=""></a>
+          <tr>
+            <th>Park Name</th>
+          </tr>
+          <tr>
+            <td><a href="/park/Alton%20Towers">Alton Towers</a></td>
+          </tr>
+          <tr>
+            <td><a href="/park/Thorpe%20Park">Thorpe Park</a></td>
+          </tr>
+          <tr>
+            <td>
+              <a href="/park/Chessington%20World%20of%20Adventure"
+                >Chessington World of Adventure</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="/park/Pleasure%20Beach%20Resort"
+                >Pleasure Beach Resort</a
+              >
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div id="data-json-container"></div>
+    </div>
+
+    <form>
+      <input type="text" placeholder="Search.." role="search" name="search" />
+      <button type="submit"><i class="fa fa-search"></i>Search</button>
+    </form>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.querySelector('input[name="search"]');
+        const dataContainer = document.getElementById("data-table-container");
+
+        searchInput.addEventListener("input", function () {
+          const searchTerm = searchInput.value.toLowerCase();
+          const dataRows = dataContainer.querySelectorAll("tr");
+
+          dataRows.forEach(function (row) {
+            const parkName = row.cells[0].textContent.toLowerCase();
+
+            if (parkName.includes(searchTerm)) {
+              row.style.display = "table-row";
+            } else {
+              row.style.display = "none";
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
