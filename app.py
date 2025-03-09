@@ -3,7 +3,7 @@
 # ----------------
 # Imports
 # ----------------
-from flask import Flask, g, render_template
+from flask import Flask, g, render_template, url_for, request, redirect
 import sqlite3
 
 
@@ -38,8 +38,7 @@ def close_connection(exception):
 # home route
 @app.route('/')
 def index():
-    
-    
+        
     cur = get_db().cursor()
     sql = "SELECT * FROM movies;"
     cur.execute(sql)
@@ -47,6 +46,40 @@ def index():
 
     return render_template("index.html", movies=results)
     
+# movies listing route
+@app.route('/movies')
+def movie_listing():
+        
+    cur = get_db().cursor()
+    sql = "SELECT * FROM movies;"
+    cur.execute(sql)
+    results = cur.fetchall()
+
+    return render_template("movies.html", movies=results)
+
+# add route
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+
+    # if request.method == 'GET':
+    #     return render_template("add.html")    
+    if request.method == 'POST':
+        
+        cur = get_db().cursor()
+        new_title = request.form['title']
+        new_release_date = request.form['release_date']
+        new_nominations = request.form['nominations']
+        new_director_id = request.form['director_id']
+
+        sql = '''
+            INSERT INTO movies (release_date, title, nominations, director_id)
+            VALUES (?, ?, ?, ?);
+        '''
+        cur.execute(sql,(new_title, new_release_date, new_nominations, new_director_id))
+        get_db().commit()  
+
+    return redirect("/movies")
+
 
 
 
