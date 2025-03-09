@@ -41,7 +41,7 @@ def index():
     
     
     cur = get_db().cursor()
-    sql = "SELECT * FROM movies"
+    sql = "SELECT * FROM movies;"
     cur.execute(sql)
     results = cur.fetchall()
 
