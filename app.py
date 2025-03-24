@@ -72,7 +72,7 @@ def add():
         new_director_id = request.form['director_id']
 
         sql = '''
-            INSERT INTO movies (release_date, title, nominations, director_id)
+            INSERT INTO movies (title, release_date, nominations, director_id)
             VALUES (?, ?, ?, ?);
         '''
         cur.execute(sql,(new_title, new_release_date, new_nominations, new_director_id))
