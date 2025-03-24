@@ -47,15 +47,42 @@ def index():
     return render_template("index.html", movies=results)
     
 # movies listing route
-@app.route('/movies')
+@app.route('/movies', methods=['GET', 'POST'])
 def movie_listing():
         
-    cur = get_db().cursor()
-    sql = "SELECT * FROM movies;"
-    cur.execute(sql)
-    results = cur.fetchall()
+    if request.method == 'POST':
+        
+        cur = get_db().cursor()
+        search = request.form['search']      
+        director_id = request.form['directors']      
+        optional_director = ""
+        if director_id:
+            optional_director = "AND director_id = " + director_id
+        sql = f'''
+            SELECT * FROM movies 
+            WHERE title LIKE '%' || ? || '%'
+            {optional_director}
+        '''
+        cur.execute(sql, (search,))
+        results = cur.fetchall()
 
-    return render_template("movies.html", movies=results)
+    else:
+        # Get all movies
+        cur = get_db().cursor()
+        sql = "SELECT * FROM movies;"
+        cur.execute(sql)
+        results = cur.fetchall()
+
+
+    # Get all directors
+    cur = get_db().cursor()
+    sql = "SELECT * FROM directors ORDER BY name;"
+    cur.execute(sql)
+    directors = cur.fetchall()
+
+    return render_template("movies.html", movies=results, directors=directors)
+
+
 
 # add route
 @app.route('/add', methods=['GET', 'POST'])
